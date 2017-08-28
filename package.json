@@ -1,0 +1,30 @@
+{
+  "name": "mysteryword",
+  "version": "1.0.0",
+  "description": "hangman game",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lepinem/mysteryword.git"
+  },
+  "author": "lepinem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lepinem/mysteryword/issues"
+  },
+  "homepage": "https://github.com/lepinem/mysteryword#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "express-session": "^1.15.5",
+    "fs": "0.0.1-security",
+    "jest": "^20.0.4",
+    "mustache": "^2.3.0",
+    "mustache-express": "^1.2.5",
+    "nodemon": "^1.11.0",
+    "serve-favicon": "^2.4.3"
+  }
+}
