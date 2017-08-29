@@ -12,7 +12,7 @@ const mustacheExpress = require('mustache-express');
 const app = express();
 const dal = require('./dal');
 
-//middleware
+//view engine and midware
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
@@ -29,9 +29,25 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: null }
+    // alert: ''
   })
 )
+
+app.use(function (req, res, next) {
+  if (req.session.usr) {
+    req.isAuthenticated = true
+  } else {
+    req.isAuthenticated = false
+  }
+  console.log(req.isAuthenticated, 'session')
+  next()
+})
+
+
 //routes
+app.get('/', function(req, res){
+  res.render('home');
+})
 
 
 
