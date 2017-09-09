@@ -12,6 +12,7 @@ const mustacheExpress = require('mustache-express');
 const app = express();
 const dal = require('./dal');
 
+
 //view engine and midware
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -20,7 +21,7 @@ app.set('views', __dirname + '/views');
 app.use(express.static('public'));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //session
 app.use(
@@ -29,25 +30,55 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: null }
-    // alert: ''
   })
-)
+);
 
-app.use(function (req, res, next) {
-  if (req.session.usr) {
-    req.isAuthenticated = true
-  } else {
-    req.isAuthenticated = false
-  }
-  console.log(req.isAuthenticated, 'session')
-  next()
-})
-
+// app.use(function (req, res, next) {
+//   if (req.session.wrd) {
+//     req.isAuth = true
+//   } else {
+//     req.isAuth = false
+//   }
+//   console.log(req.isAuth, 'session')
+//   next()
+// })
 
 //routes
-app.get('/', function(req, res){
-  res.render('home');
+
+app.get('/', (req, res) => {
+  res.render('level');
 })
+
+app.post('/easy', (req, res) => {
+  req.session.wrd = dal.getRandomEasyWord();
+  res.redirect('game');
+})
+
+app.post('/normal', (req, res) => {
+  req.session.wrd = dal.getRandomNormalWord();
+  res.redirect('game');
+})
+
+app.post('/hard', (req, res) => {
+  req.session.wrd = dal.getRandomHardWord();
+  res.redirect('game');
+})
+
+app.get('/game', (req, res) => {
+  const word =
+  req.body.wrd = dal.dashWord(req.session.wrd);
+  // guessesLeft = 8;
+  res.render('game');
+})
+
+// letter submit
+app.post('/game', (req, res) => {
+  req.body = dal.addLetters()
+  res.redirect('game')
+})
+
+//letter submit, to be compared to letters stored in session; true = reveal, false = guesses-1
+
 
 
 
