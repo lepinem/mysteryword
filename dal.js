@@ -5,14 +5,7 @@ const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().sp
 const wordsEasy = words.filter(w => w.length <= 5);
 const wordsHard = words.filter(w => w.length >= 8);
 const wordsNormal = words.filter(w => w.length > 5 && w.length < 8);
-// let theWord = '';
-// let theWordArr = theWord.split('');
-// let dashWord = theWordArr.map(l => '_');
-// const theSpaces = dashWord().split('');
-// let letters = [];
-// let guess = '';
-// let guessesLeft = 8;
-// let dashes = [];
+
 
 //gets random word from wordsEasy array
 function getRandomEasyWord() {
@@ -41,9 +34,10 @@ function dashWord() {
 
 //tracks the letters used during the round
 function addLetters(guess) {
+  let letters = []
   letters.push(guess);
   console.log(letters)
-    return letters;
+  return letters
 }
 
 

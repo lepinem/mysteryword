@@ -1,7 +1,6 @@
 //app.js
 
 //globals and dependencies
-
 const bodyParser = require('body-parser');
 const express = require('express');
 const session = require('express-session');
@@ -11,7 +10,6 @@ const mustache = require('mustache');
 const mustacheExpress = require('mustache-express');
 const app = express();
 const dal = require('./dal');
-
 
 //view engine and midware
 app.engine('mustache', mustacheExpress());
@@ -31,20 +29,9 @@ app.use(
     saveUninitialized: true,
     cookie: { maxAge: null }
   })
-);
-
-// app.use(function (req, res, next) {
-//   if (req.session.wrd) {
-//     req.isAuth = true
-//   } else {
-//     req.isAuth = false
-//   }
-//   console.log(req.isAuth, 'session')
-//   next()
-// })
+)
 
 //routes
-
 app.get('/', (req, res) => {
   res.render('level');
 })
@@ -65,7 +52,7 @@ app.post('/hard', (req, res) => {
 })
 
 app.get('/game', (req, res) => {
-  const word =
+  const word = req.session
   req.body.wrd = dal.dashWord(req.session.wrd);
   // guessesLeft = 8;
   res.render('game');
@@ -73,8 +60,8 @@ app.get('/game', (req, res) => {
 
 // letter submit
 app.post('/game', (req, res) => {
-  req.body = dal.addLetters()
-  res.redirect('game')
+  dal.addLetters(req.body.guess)
+  res.redirect('/game')
 })
 
 //letter submit, to be compared to letters stored in session; true = reveal, false = guesses-1
