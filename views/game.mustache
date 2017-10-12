@@ -19,7 +19,7 @@
     <div class="main">
       <section class="dashZone">
         <div class="dashes">
-
+          {{#display}}<span> {{.}} </span>{{/display}}
         </div>
       </section>
       <section class="submitZone">
@@ -31,7 +31,7 @@
       </section>
       <section class="spentZone">
         <div class="spent">
-          <h3>Letters used: {{#letters}}<span>{{.}}</span>{{/letters}}</h3>
+          <h3>Letters used: {{#lettersGuessed}}<span>{{.}}</span>{{/lettersGuessed}}</h3>
         </div>
       </section>
 

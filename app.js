@@ -38,29 +38,64 @@ app.get('/', (req, res) => {
 
 app.post('/easy', (req, res) => {
   req.session.wrd = dal.getRandomEasyWord();
+  console.log('da word',req.session.wrd);
+  req.session.display = dal.dashWord(req.session.wrd)
+  req.session.lettersGuessed = []
+  req.session.guessesLeft = 8
+  console.log(req.session.display);
+  console.log(req.session);
+
   res.redirect('game');
 })
 
 app.post('/normal', (req, res) => {
   req.session.wrd = dal.getRandomNormalWord();
+  console.log('da word',req.session.wrd);
+  req.session.display = dal.dashWord(req.session.wrd)
+  req.session.lettersGuessed = []
+  req.session.guessesLeft = 8
+  console.log(req.session.display);
   res.redirect('game');
 })
 
 app.post('/hard', (req, res) => {
   req.session.wrd = dal.getRandomHardWord();
+  console.log('da word',req.session.wrd);
+  req.session.display = dal.dashWord(req.session.wrd)
+  req.session.lettersGuessed = []
+  req.session.guessesLeft = 8
+  console.log(req.session.display);
   res.redirect('game');
 })
 
 app.get('/game', (req, res) => {
-  const word = req.session
-  req.body.wrd = dal.dashWord(req.session.wrd);
-  // guessesLeft = 8;
-  res.render('game');
+
+  const renderModel = {
+    lettersGuessed: req.session.lettersGuessed,
+    guessesLeft: req.session.guessesLeft,
+    display: req.session.display
+  }
+
+  res.render('game', renderModel);
 })
+
 
 // letter submit
 app.post('/game', (req, res) => {
-  dal.addLetters(req.body.guess)
+  req.session.lettersGuessed = dal.addLetters(req.body.guess, req.session.lettersGuessed)
+
+  let newGameState = dal.compareGuess(req.body.guess, req.session.display, req.session.wrd, req.session.guessesLeft)
+
+  req.session.display = newGameState.display
+  req.session.guessesLeft = newGameState.guessesLeft
+
+  if(req.session.guessesLeft === 0){
+    return res.render('lost')
+  }
+  if(req.session.display.indexOf('_') === -1){
+    return res.send('you WIN!')
+  }
+
   res.redirect('/game')
 })
 
